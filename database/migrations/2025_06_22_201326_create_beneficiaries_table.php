@@ -13,8 +13,7 @@ return new class extends Migration
         public function up(): void
     {
         Schema::create('beneficiaries', function (Blueprint $table) {
-            $table->string('id', 20)->primary()->comment('Identificador único, generado a partir de RUN y DV');
-
+             $table->id()->comment('Identificador único, generado a partir de RUN y DV');
             $table->integer('run')->comment('RUN del beneficiario');
             $table->string('verification_digit', 1)->comment('Dígito verificador del RUN');
             $table->string('first_names')->comment('Nombres del beneficiario');
@@ -54,15 +53,12 @@ return new class extends Migration
             $table->string('age_group', 50)->nullable()->comment('Categoría del grupo etario');
             $table->integer('accreditation_or_entry_year')->nullable()->comment('Año en que se acreditó o ingresó al dispositivo PRAIS');
 
-            // Foreign Key a la tabla 'dispositivos' (devices)
-            // Asumo que la tabla de dispositivos se llamará 'devices' y su PK es 'id'
             $table->unsignedBigInteger('device_id')->nullable()->comment('Dispositivo PRAIS al que está asignado');
             $table->foreign('device_id')->references('id')->on('devices')->onDelete('set null');
 
-            $table->timestamps(); // Adds created_at and updated_at
+            $table->timestamps();
         });
 
-        // Añadir comentario a la tabla (compatible con PostgreSQL y MySQL)
         DB::statement('COMMENT ON TABLE beneficiaries IS \'Tabla que almacena la información completa de los beneficiarios del programa PRAIS\'');
     }
 

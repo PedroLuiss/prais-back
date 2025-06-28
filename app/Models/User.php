@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,5 +50,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+     /**
+     * Las alertas de notificación que el usuario ha configurado.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function notificationAlerts(): BelongsToMany
+    {
+        return $this->belongsToMany(NotificationAlert::class, 'notification_alert_user')
+                    ->withPivot('status') // <-- ¡Importante! Para acceder al estado.
+                    ->withTimestamps();   // <-- Para acceder a created_at/updated_at del pivote.
     }
 }
