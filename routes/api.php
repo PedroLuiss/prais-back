@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\LogoutController;
 use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\BeneficiaryController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +33,6 @@ Route::prefix("/user")->group(function() {
         ->name("user.delete")
         ->middleware("auth:sanctum");
 });
+
+
+Route::get('/beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
