@@ -37,3 +37,9 @@ Route::prefix("/user")->group(function() {
 
 Route::get('beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
 Route::post('beneficiaries', [BeneficiaryController::class, 'store'])->name('beneficiaries.store');
+Route::put('beneficiaries/{beneficiary}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
+Route::delete('/beneficiaries/{beneficiary}', [BeneficiaryController::class, 'destroy'])->name('beneficiaries.destroy');
+
+Route::get('/beneficiaries/export', [BeneficiaryController::class, 'export'])->name('beneficiaries.export');
+Route::get('/beneficiaries/import-template', [BeneficiaryController::class, 'downloadImportTemplate'])->name('beneficiaries.import-template');
+Route::post('/beneficiaries/import', [BeneficiaryController::class, 'import'])->name('beneficiaries.import');

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Beneficiary;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class BeneficiaryRepository
@@ -51,8 +52,6 @@ class BeneficiaryRepository
      */
     public function create(array $data): Beneficiary
     {
-        // Usamos una transacción para asegurar que todas las operaciones
-        // de base de datos se completen exitosamente o ninguna lo haga.
         return DB::transaction(function () use ($data) {
 
             $repressiveSituationIds = $data['repressive_situation_ids'] ?? [];
@@ -64,10 +63,58 @@ class BeneficiaryRepository
                 $beneficiary->repressiveSituations()->sync($repressiveSituationIds);
             }
 
-            // Recargamos las relaciones para devolver el modelo completo.
             $beneficiary->load('repressiveSituations');
 
             return $beneficiary;
         });
+    }
+
+
+    /**
+     * Actualiza un beneficiario existente y sus relaciones.
+     *
+     * @param Beneficiary $beneficiary
+     * @param array $data
+     * @return Beneficiary
+     */
+    public function update(Beneficiary $beneficiary, array $data): Beneficiary
+    {
+        return DB::transaction(function () use ($beneficiary, $data) {
+
+            $repressiveSituationIds = $data['repressive_situation_ids'] ?? [];
+            unset($data['repressive_situation_ids']);
+
+            $beneficiary->update($data);
+
+            if (isset($data['repressive_situation_ids'])) {
+                $beneficiary->repressiveSituations()->sync($repressiveSituationIds);
+            }
+
+            $beneficiary->load('repressiveSituations');
+
+            return $beneficiary;
+        });
+    }
+
+    /**
+     * Realiza una eliminación lógica (soft delete) de un beneficiario.
+     *
+     * @param Beneficiary $beneficiary
+     * @return bool|null
+     */
+    public function delete(Beneficiary $beneficiary): ?bool
+    {
+        return $beneficiary->delete();
+    }
+
+    /**
+     * Obtiene todos los beneficiarios para exportación.
+     *
+     * @return Collection
+     */
+    public function getAllForExport(): Collection
+    {
+        // Usamos 'with' para evitar el problema N+1 y cargar la relación de forma eficiente.
+        return Beneficiary::with('device')->get();
     }
 }

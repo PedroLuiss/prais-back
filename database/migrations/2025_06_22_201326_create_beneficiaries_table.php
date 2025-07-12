@@ -57,6 +57,7 @@ return new class extends Migration
             $table->foreign('device_id')->references('id')->on('devices')->onDelete('set null');
 
             $table->timestamps();
+            $table->softDeletes();
         });
 
         DB::statement('COMMENT ON TABLE beneficiaries IS \'Tabla que almacena la información completa de los beneficiarios del programa PRAIS\'');
