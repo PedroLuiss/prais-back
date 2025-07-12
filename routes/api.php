@@ -35,4 +35,5 @@ Route::prefix("/user")->group(function() {
 });
 
 
-Route::get('/beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
+Route::get('beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
+Route::post('beneficiaries', [BeneficiaryController::class, 'store'])->name('beneficiaries.store');

@@ -20,5 +20,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Jane Doe',
             'email' => 'jane@doe.com',
         ]);
+
+        $this->call([
+            HealthServiceSeeder::class,
+            DeviceSeeder::class,
+            RepressiveSituationSeeder::class,
+        ]);
     }
 }

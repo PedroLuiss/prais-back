@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Beneficiary;
 use App\Repositories\BeneficiaryRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -9,7 +10,6 @@ class BeneficiaryService
 {
     protected $beneficiaryRepository;
 
-    // Inyectamos el repositorio a través del constructor (Mejor práctica)
     public function __construct(BeneficiaryRepository $beneficiaryRepository)
     {
         $this->beneficiaryRepository = $beneficiaryRepository;
@@ -23,7 +23,6 @@ class BeneficiaryService
      */
     public function listBeneficiaries(array $requestData): LengthAwarePaginator
     {
-        // Extraemos solo los filtros que nos interesan del request
         $filters = [
             'run' => $requestData['run'] ?? null,
             'beneficiary_name' => $requestData['beneficiary_name'] ?? null,
@@ -31,7 +30,18 @@ class BeneficiaryService
             'victim_name' => $requestData['victim_name'] ?? null,
         ];
 
-        // Llamamos al repositorio con los filtros limpios
         return $this->beneficiaryRepository->getFiltered($filters);
+    }
+
+
+    /**
+     * Prepara los datos y crea un nuevo beneficiario.
+     *
+     * @param array $data Los datos validados del request.
+     * @return Beneficiary
+     */
+    public function createBeneficiary(array $data): Beneficiary
+    {
+        return $this->beneficiaryRepository->create($data);
     }
 }

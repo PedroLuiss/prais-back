@@ -40,4 +40,34 @@ class BeneficiaryRepository
 
         return $query->orderBy('primary_last_name', 'asc')->paginate($perPage);
     }
+
+
+    /**
+     * Crea un nuevo registro de beneficiario y asocia sus relaciones.
+     *
+     * @param array $data
+     * @return Beneficiary
+     * @throws Exception
+     */
+    public function create(array $data): Beneficiary
+    {
+        // Usamos una transacción para asegurar que todas las operaciones
+        // de base de datos se completen exitosamente o ninguna lo haga.
+        return DB::transaction(function () use ($data) {
+
+            $repressiveSituationIds = $data['repressive_situation_ids'] ?? [];
+            unset($data['repressive_situation_ids']);
+
+            $beneficiary = Beneficiary::create($data);
+
+            if (!empty($repressiveSituationIds)) {
+                $beneficiary->repressiveSituations()->sync($repressiveSituationIds);
+            }
+
+            // Recargamos las relaciones para devolver el modelo completo.
+            $beneficiary->load('repressiveSituations');
+
+            return $beneficiary;
+        });
+    }
 }
