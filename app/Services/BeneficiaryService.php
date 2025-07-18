@@ -23,9 +23,6 @@ class BeneficiaryService
 
     /**
      * Prepara los filtros y obtiene la lista de beneficiarios.
-     *
-     * @param array $requestData Los datos del request HTTP.
-     * @return LengthAwarePaginator
      */
     public function listBeneficiaries(array $requestData): LengthAwarePaginator
     {
@@ -42,9 +39,6 @@ class BeneficiaryService
 
     /**
      * Prepara los datos y crea un nuevo beneficiario.
-     *
-     * @param array $data Los datos validados del request.
-     * @return Beneficiary
      */
     public function createBeneficiary(array $data): Beneficiary
     {
@@ -53,10 +47,6 @@ class BeneficiaryService
 
     /**
      * Prepara los datos y actualiza un beneficiario existente.
-     *
-     * @param Beneficiary $beneficiary El beneficiario a actualizar.
-     * @param array $data Los datos validados del request.
-     * @return Beneficiary
      */
     public function updateBeneficiary(Beneficiary $beneficiary, array $data): Beneficiary
     {
@@ -66,9 +56,6 @@ class BeneficiaryService
 
     /**
      * Elimina lógicamente un beneficiario.
-     *
-     * @param Beneficiary $beneficiary
-     * @return bool|null
      */
     public function deleteBeneficiary(Beneficiary $beneficiary): ?bool
     {
@@ -78,9 +65,6 @@ class BeneficiaryService
 
     /**
      * Genera y devuelve un archivo de exportación de beneficiarios.
-     *
-     * @param string $format El formato deseado ('xlsx' o 'csv').
-     * @return BinaryFileResponse
      */
     public function exportBeneficiaries(string $format): BinaryFileResponse
     {
@@ -97,8 +81,6 @@ class BeneficiaryService
 
     /**
      * Genera y devuelve el archivo de plantilla para la importación.
-     *
-     * @return BinaryFileResponse
      */
     public function getImportTemplate(): BinaryFileResponse
     {
@@ -107,8 +89,6 @@ class BeneficiaryService
 
     /**
      * Procesa un archivo de Excel para la importación masiva de beneficiarios.
-     *
-     * @return void
      */
     public function importBeneficiaries($file): void
     {

@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('beneficiaries', function (Blueprint $table) {
              $table->id()->comment('Identificador único, generado a partir de RUN y DV');
-            $table->integer('run')->comment('RUN del beneficiario');
+            $table->string('run')->comment('RUN del beneficiario');
             $table->string('verification_digit', 1)->comment('Dígito verificador del RUN');
             $table->string('first_names')->comment('Nombres del beneficiario');
             $table->string('primary_last_name')->comment('Primer apellido del beneficiario');
